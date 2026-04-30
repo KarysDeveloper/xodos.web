@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XoDos — Windows & Linux Emulator for Android</title>
+    <meta name="description" content="XoDos: Run Windows and Linux games & apps on Android. Fully customizable, open source, no root required.">
+    <meta name="author" content="Karys Developer">
+    <meta name="theme-color" content="#1a0a2e">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="XoDos — Emulator">
+    <meta property="og:description" content="Windows & Linux emulator for Android. No root. Open source.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/xodiosx/XoDos/main/Logo.png">
+    <meta property="og:type" content="website">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=JetBrains+Mono:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- KD PIXEL WATERMARK (floating shield) -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="kd-watermark" id="kdWatermark" title="Karys Developer ⚔">
+        <canvas id="pixelCanvas" width="16" height="20"></canvas>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- NAV -->
+    <!-- ═══════════════════════════════════════════ -->
+    <nav class="nav" id="nav">
+        <div class="nav-inner">
+            <a href="#" class="nav-logo">
+                <span class="nav-logo-pixel">⚔</span>
+                <span class="nav-logo-text">XoDos</span>
+            </a>
+            <div class="nav-links" id="navLinks">
+                <a href="#about">About</a>
+                <a href="#features">Features</a>
+                <a href="#how">How it Works</a>
+                <a href="#releases">Releases</a>
+                <a href="#contributors">Team</a>
+                <a href="#credits">Credits</a>
+            </div>
+            <button class="nav-toggle" id="navToggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- HERO -->
+    <!-- ═══════════════════════════════════════════ -->
+    <header class="hero" id="hero">
+        <div class="hero-particles" id="heroParticles"></div>
+        <div class="hero-scanline"></div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="pixel-heart">♥</span> OPEN SOURCE
+                <span class="pixel-heart">♥</span>
+            </div>
+            <h1 class="hero-title">
+                <span class="hero-title-xo">Xo</span><span class="hero-title-dos">Dos</span>
+            </h1>
+            <p class="hero-subtitle">Windows & Linux Emulator for Android</p>
+            <p class="hero-desc">Run games and apps from Windows & Linux on your phone.<br>No root. Fully customizable. Built with ❤️ and C.</p>
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-num" data-count="644">0</span>
+                    <span class="stat-label"><i class="fas fa-star"></i> Stars</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-num" data-count="300000">0</span>
+                    <span class="stat-label"><i class="fas fa-download"></i> Downloads</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-num" data-count="52">0</span>
+                    <span class="stat-label"><i class="fas fa-code-branch"></i> Forks</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-num" data-count="7">0</span>
+                    <span class="stat-label"><i class="fas fa-globe"></i> Countries</span>
+                </div>
+            </div>
+            <div class="hero-buttons">
+                <a href="https://github.com/xodiosx/XoDos/releases" class="btn btn-primary" target="_blank">
+                    <i class="fas fa-download"></i> Download
+                </a>
+                <a href="https://github.com/xodiosx/XoDos" class="btn btn-secondary" target="_blank">
+                    <i class="fab fa-github"></i> Source Code
+                </a>
+                <a href="https://discord.gg/d2ChVhPfnF" class="btn btn-discord" target="_blank">
+                    <i class="fab fa-discord"></i> Discord
+                </a>
+            </div>
+        </div>
+        <div class="hero-termux">
+            <div class="termux-bar">
+                <span class="termux-dot"></span>
+                <span class="termux-title">xodos@android:~$</span>
+            </div>
+            <div class="termux-body">
+                <div class="termux-line"><span class="prompt">$</span> xodos --status</div>
+                <div class="termux-line type-line"><span class="prompt">$</span> <span class="typewriter" id="termuxType"></span><span class="cursor">█</span></div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span>▼ SCROLL</span>
+        </div>
+    </header>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- ABOUT -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section class="section" id="about">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">&lt;about&gt;</span>
+                <h2 class="section-title">What is <span class="highlight">XoDos</span>?</h2>
+                <span class="section-tag">&lt;/about&gt;</span>
+            </div>
+            <div class="about-grid">
+                <div class="about-card glass-card">
+                    <div class="about-icon">🖥️</div>
+                    <h3>X Server + Termux</h3>
+                    <p>A fully fledged X server with Termux and Winlator touch controls together in one app. Built with Android NDK for maximum performance.</p>
+                </div>
+                <div class="about-card glass-card">
+                    <div class="about-icon">🎮</div>
+                    <h3>Gaming Ready</h3>
+                    <p>Turnip drivers, VirGl, Vulkan wrappers, DXVK, WineD3D, Box64 — everything needed to run Windows and Linux games on Android.</p>
+                </div>
+                <div class="about-card glass-card">
+                    <div class="about-icon">🐧</div>
+                    <h3>Linux Desktop</h3>
+                    <p>Pre-installed Debian and Kali Linux with XFCE4 desktop. Proot and chroot support for a complete Linux experience on your phone.</p>
+                </div>
+                <div class="about-card glass-card">
+                    <div class="about-icon">🔓</div>
+                    <h3>No Root Required</h3>
+                    <p>Works on stock Android. No root, no complicated setup. Install the APK, grant storage permission, and you're ready to go.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- FEATURES -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section class="section section-alt" id="features">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">⚔ FEATURES ⚔</span>
+                <h2 class="section-title">Arsenal <span class="highlight">Complete</span></h2>
+            </div>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon-wrap"><i class="fas fa-wine-glass-alt"></i></div>
+                    <h4>Wine (glibc + bionic)</h4>
+                    <p>Dual Wine builds for maximum compatibility with Windows applications and games.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon-wrap"><i class="fas fa-cube"></i></div>
+                    <h4>Box64</h4>
+                    <p>x86_64 emulation on ARM64 — run binaries that weren't compiled for your device.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon-wrap"><i class="fas fa-microchip"></i></div>
+                    <h4>Mesa 3D / Turnip</h4>
+                    <p>Open source GPU drivers for Adreno and more. Vulkan support included.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon-wrap"><i class="fas fa-gamepad"></i></div>
+                    <h4>Touch Controls</h4>
+                    <p>Winlator-style on-screen joystick and controls for PC games on mobile.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon-wrap"><i class="fas fa-desktop"></i></div>
+                    <h4>Termux-X11</h4>
+                    <p>Full X11 server for graphical Linux applications and desktop environments.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon-wrap"><i class="fas fa-terminal"></i></div>
+                    <h4>Terminal Emulator</h4>
+                    <p>Built-in terminal with full Linux command line access and package management.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon-wrap"><i class="fas fa-ghost"></i></div>
+                    <h4>DXVK / WineD3D</h4>
+                    <p>DirectX to Vulkan translation layer. Play DX9/10/11 games through Vulkan.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon-wrap"><i class="fas fa-circle"></i></div>
+                    <h4>Float Ball</h4>
+                    <p>Floating quick-access ball for settings, keyboard, and controls toggle.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon-wrap"><i class="fab fa-linux"></i></div>
+                    <h4>Proot / Chroot</h4>
+                    <p>Install Debian or Kali Linux with full desktop environment. No root needed.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- HOW IT WORKS -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section class="section" id="how">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">📜 QUEST GUIDE</span>
+                <h2 class="section-title">How it <span class="highlight">Works</span></h2>
+            </div>
+            <div class="how-timeline">
+                <div class="how-step">
+                    <div class="how-number">01</div>
+                    <div class="how-content glass-card">
+                        <h4>Install the APK</h4>
+                        <p>Download the latest release from GitHub. Install it on your Android device (arm64).</p>
+                        <div class="how-code">📦 XoDos-v6.0.0-arm64.apk</div>
+                    </div>
+                </div>
+                <div class="how-step">
+                    <div class="how-number">02</div>
+                    <div class="how-content glass-card">
+                        <h4>Install XoDos System</h4>
+                        <p>Open the app → go to Settings → tap "Install XoDos System". Wait for it to finish. Grant storage permission.</p>
+                        <div class="how-code">⚙️ Installing rootfs... please wait</div>
+                    </div>
+                </div>
+                <div class="how-step">
+                    <div class="how-number">03</div>
+                    <div class="how-content glass-card">
+                        <h4>Launch & Play</h4>
+                        <p>The app closes automatically when done. Reopen it and you're in — start the X server, run Wine, or boot into your Linux desktop.</p>
+                        <div class="how-code">🚀 $ startx && wine game.exe</div>
+                    </div>
+                </div>
+                <div class="how-step">
+                    <div class="how-number">⚠</div>
+                    <div class="how-content glass-card warning-card">
+                        <h4>Android 11+ Fix</h4>
+                        <p>If the app crashes, you need to disable the phantom process killer:</p>
+                        <div class="how-code">
+                            <code>settings put global settings_enable_monitor_phantom_procs false</code>
+                        </div>
+                        <a href="https://youtube.com/shorts/5vOUHn_qvis" target="_blank" class="link-accent">📺 Watch fix video</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- RELEASES -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section class="section section-alt" id="releases">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">🎮 PATCH NOTES</span>
+                <h2 class="section-title">Release <span class="highlight">Log</span></h2>
+            </div>
+            <div class="releases-list">
+                <div class="release-card glass-card">
+                    <div class="release-header">
+                        <span class="release-badge latest">LATEST</span>
+                        <h3>XoDos — Rebirth Edition</h3>
+                        <span class="release-version">v1.0.3-link</span>
+                        <span class="release-date">Dec 8, 2025</span>
+                    </div>
+                    <p>Happy Holidays & Happy Birthday XoDos! 🎂 The rebirth of XoDos with a completely new architecture.</p>
+                    <a href="https://github.com/xodiosx/XoDos/releases/tag/1.0.3-link" target="_blank" class="btn btn-sm btn-primary">Download →</a>
+                </div>
+                <div class="release-card glass-card">
+                    <div class="release-header">
+                        <span class="release-badge major">MAJOR</span>
+                        <h3>XoDos v6.0.0 Final</h3>
+                        <span class="release-version">v6.0.0</span>
+                        <span class="release-date">Nov 9, 2025</span>
+                        <span class="release-downloads">📥 13,823</span>
+                    </div>
+                    <p>Last update before development pause. Complete stable release with all features working.</p>
+                    <a href="https://github.com/xodiosx/XoDos/releases/tag/v6.0.0%2Bc050ebd" target="_blank" class="btn btn-sm btn-primary">Download →</a>
+                </div>
+                <div class="release-card glass-card">
+                    <div class="release-header">
+                        <span class="release-badge major">MAJOR</span>
+                        <h3>XoDos v6.0.0 — "The All-in-One Powerhouse"</h3>
+                        <span class="release-version">v6.0.0</span>
+                        <span class="release-date">Oct 28, 2025</span>
+                        <span class="release-downloads">📥 150,207</span>
+                    </div>
+                    <p>Massive update packed with fixes, optimizations, and incredible new features. The definitive XoDos experience.</p>
+                    <a href="https://github.com/xodiosx/XoDos/releases/tag/v6.0.0" target="_blank" class="btn btn-sm btn-primary">Download →</a>
+                </div>
+                <div class="release-card glass-card">
+                    <div class="release-header">
+                        <h3>XoDos v5.9.0</h3>
+                        <span class="release-version">v5.9.0</span>
+                        <span class="release-date">Sep 7, 2025</span>
+                        <span class="release-downloads">📥 96,631</span>
+                    </div>
+                    <p>Polished UI, powerful new under-the-hood improvements. Major update for the emulator core.</p>
+                    <a href="https://github.com/xodiosx/XoDos/releases/tag/5.9.0" target="_blank" class="btn btn-sm btn-secondary">Download →</a>
+                </div>
+            </div>
+            <div class="releases-more">
+                <a href="https://github.com/xodiosx/XoDos/releases" target="_blank" class="btn btn-secondary">
+                    <i class="fab fa-github"></i> All Releases on GitHub
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- CONTRIBUTORS -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section class="section" id="contributors">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">🗡️ GUILD MEMBERS</span>
+                <h2 class="section-title">The <span class="highlight">Team</span></h2>
+            </div>
+            <div class="contributors-grid">
+                <div class="contributor-card glass-card lead">
+                    <div class="contributor-avatar">
+                        <img src="https://avatars.githubusercontent.com/u/59384112?v=4" alt="xodiosx" loading="lazy">
+                        <span class="contributor-role">👑 Lead</span>
+                    </div>
+                    <h4>xodiosx</h4>
+                    <span class="contributor-flag">🇾🇪 Yemen</span>
+                    <div class="contributor-links">
+                        <a href="https://github.com/xodiosx" target="_blank"><i class="fab fa-github"></i></a>
+                        <a href="https://x.com/XAleiwi" target="_blank"><i class="fab fa-x-twitter"></i></a>
+                        <a href="https://youtube.com/@xodmods5082" target="_blank"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="contributor-card glass-card">
+                    <div class="contributor-avatar">
+                        <img src="https://avatars.githubusercontent.com/DesarrolladorPrimary" alt="DesarrolladorPrimary" loading="lazy">
+                        <span class="contributor-role">⚔️ Dev</span>
+                    </div>
+                    <h4>DesarrolladorPrimary</h4>
+                    <span class="contributor-flag">🇨🇴 Colombia</span>
+                    <div class="contributor-links">
+                        <a href="https://github.com/DesarrolladorPrimary" target="_blank"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="contributor-card glass-card">
+                    <div class="contributor-avatar">
+                        <img src="https://avatars.githubusercontent.com/Mondo67244" alt="Mondo67244" loading="lazy">
+                        <span class="contributor-role">⚔️ Dev</span>
+                    </div>
+                    <h4>Mondo67244</h4>
+                    <span class="contributor-flag">🇲🇫 France</span>
+                    <div class="contributor-links">
+                        <a href="https://github.com/Mondo67244" target="_blank"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="contributor-card glass-card">
+                    <div class="contributor-avatar">
+                        <div class="contributor-placeholder">A</div>
+                        <span class="contributor-role">⚔️ Dev</span>
+                    </div>
+                    <h4>Aurora0y</h4>
+                    <span class="contributor-flag">🇧🇷 Brazil</span>
+                    <span class="contributor-telegram">Telegram</span>
+                </div>
+                <div class="contributor-card glass-card">
+                    <div class="contributor-avatar">
+                        <div class="contributor-placeholder">C</div>
+                        <span class="contributor-role">⚔️ Dev</span>
+                    </div>
+                    <h4>Chest1902</h4>
+                    <span class="contributor-flag">🇧🇩 Bangladesh</span>
+                    <span class="contributor-telegram">Telegram</span>
+                </div>
+                <div class="contributor-card glass-card">
+                    <div class="contributor-avatar">
+                        <img src="https://avatars.githubusercontent.com/jiaxinchen-max" alt="jiaxinchen-max" loading="lazy">
+                        <span class="contributor-role">⚔️ Dev</span>
+                    </div>
+                    <h4>jiaxinchen-max</h4>
+                    <span class="contributor-flag">🇨🇳 China</span>
+                    <div class="contributor-links">
+                        <a href="https://github.com/jiaxinchen-max" target="_blank"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="contributor-card glass-card">
+                    <div class="contributor-avatar">
+                        <img src="https://avatars.githubusercontent.com/Snap888" alt="Snap888" loading="lazy">
+                        <span class="contributor-role">⚔️ Dev</span>
+                    </div>
+                    <h4>Snap888</h4>
+                    <span class="contributor-flag">🇷🇺 Russia</span>
+                    <div class="contributor-links">
+                        <a href="https://github.com/Snap888" target="_blank"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="contributor-card glass-card">
+                    <div class="contributor-avatar">
+                        <div class="contributor-placeholder">✦</div>
+                        <span class="contributor-role">🎨 Art</span>
+                    </div>
+                    <h4>xl_v6 / ashen</h4>
+                    <span class="contributor-flag">🇮🇶 Iraq</span>
+                    <span class="contributor-telegram">Logo Designer</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- CREDITS / ACKNOWLEDGMENTS -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section class="section section-alt" id="credits">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">✨ BUFFS & ALLIES</span>
+                <h2 class="section-title">Acknowledg<span class="highlight">ments</span></h2>
+            </div>
+            <div class="credits-grid">
+                <a href="https://github.com/brunodev85/winlator" target="_blank" class="credit-card glass-card">
+                    <div class="credit-icon">🎮</div>
+                    <h4>Winlator</h4>
+                    <p>Windows emulator foundation & touch controls</p>
+                </a>
+                <a href="https://github.com/termux" target="_blank" class="credit-card glass-card">
+                    <div class="credit-icon">📱</div>
+                    <h4>Termux</h4>
+                    <p>Terminal emulator & Linux environment</p>
+                </a>
+                <a href="https://github.com/jiaxinchen-max/" target="_blank" class="credit-card glass-card">
+                    <div class="credit-icon">🔧</div>
+                    <h4>Termux Mod</h4>
+                    <p>Modified Termux with additional features</p>
+                </a>
+                <a href="https://www.winehq.org" target="_blank" class="credit-card glass-card">
+                    <div class="credit-icon">🍷</div>
+                    <h4>Wine</h4>
+                    <p>Windows compatibility layer</p>
+                </a>
+                <a href="https://www.mesa3d.org" target="_blank" class="credit-card glass-card">
+                    <div class="credit-icon">🎨</div>
+                    <h4>Mesa 3D</h4>
+                    <p>Open source graphics drivers</p>
+                </a>
+                <a href="https://github.com/ValveSoftware/dxvk" target="_blank" class="credit-card glass-card">
+                    <div class="credit-icon">⚡</div>
+                    <h4>DXVK</h4>
+                    <p>DirectX to Vulkan translation</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SUPPORT / COMMUNITY -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section class="section" id="support">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">🏰 THE GUILD</span>
+                <h2 class="section-title">Join the <span class="highlight">Community</span></h2>
+            </div>
+            <div class="community-grid">
+                <a href="https://t.me/xodemulatorr" target="_blank" class="community-card glass-card">
+                    <i class="fab fa-telegram"></i>
+                    <h4>Telegram</h4>
+                    <p>Join the group chat</p>
+                </a>
+                <a href="https://discord.gg/d2ChVhPfnF" target="_blank" class="community-card glass-card">
+                    <i class="fab fa-discord"></i>
+                    <h4>Discord</h4>
+                    <p>Community server</p>
+                </a>
+                <a href="https://youtube.com/@xodmods5082" target="_blank" class="community-card glass-card">
+                    <i class="fab fa-youtube"></i>
+                    <h4>YouTube</h4>
+                    <p>Tutorials & showcases</p>
+                </a>
+                <a href="https://x.com/XAleiwi" target="_blank" class="community-card glass-card">
+                    <i class="fab fa-x-twitter"></i>
+                    <h4>X / Twitter</h4>
+                    <p>Follow for updates</p>
+                </a>
+                <a href="https://buymeacoffee.com/karysdev" target="_blank" class="community-card glass-card">
+                    <i class="fas fa-mug-hot"></i>
+                    <h4>Buy Me a Coffee</h4>
+                    <p>Support the project ☕</p>
+                </a>
+                <a href="https://github.com/xodiosx/XoDos" target="_blank" class="community-card glass-card">
+                    <i class="fab fa-github"></i>
+                    <h4>GitHub</h4>
+                    <p>Star & contribute ⭐</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- FOOTER -->
+    <!-- ═══════════════════════════════════════════ -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">
+                    <div class="footer-kd">
+                        <span class="footer-kd-pixel">⚔</span>
+                        <span class="footer-kd-text">Karys Developer</span>
+                    </div>
+                    <p class="footer-role">Page Author & Web Dev</p>
+                </div>
+                <div class="footer-xodos">
+                    <p>XoDos — Developed by <a href="https://github.com/xodiosx" target="_blank"><strong>@xodiosx</strong></a></p>
+                    <p>Licensed under <a href="https://www.gnu.org/licenses/gpl-3.0.html" target="_blank">GPLv3</a></p>
+                </div>
+                <div class="footer-pixel-art" id="footerPixelArt">
+                    <canvas id="footerPixelCanvas" width="16" height="20"></canvas>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p><!-- Hola, curioso 👀 --> Hecho con ❤️, café y pixels por <strong>KD</strong> • <span class="year"></span></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
