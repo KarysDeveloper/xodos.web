@@ -170,10 +170,14 @@ img { max-width: 100%; display: block; }
 .nav-logo-pixel {
     font-size: 22px;
     animation: swordGlow 2s ease-in-out infinite;
+    
+    width: 20px;
 }
 @keyframes swordGlow {
     0%, 100% { filter: drop-shadow(0 0 4px var(--purple-400)); }
     50% { filter: drop-shadow(0 0 12px var(--accent-gold)); }
+    
+    
 }
 .nav-logo-text {
     font-family: var(--font-display);
