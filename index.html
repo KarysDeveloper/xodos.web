@@ -72,22 +72,22 @@
             <p class="hero-subtitle">Windows & Linux Emulator for Android</p>
             <p class="hero-desc">Run games and apps from Windows & Linux on your phone.<br>No root. Fully customizable. Built with ❤️ and C.</p>
             <div class="hero-stats">
-                <div class="stat">
-                    <span class="stat-num" data-count="644">0</span>
-                    <span class="stat-label"><i class="fas fa-star"></i> Stars</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-num" data-count="300000">0</span>
-                    <span class="stat-label"><i class="fas fa-download"></i> Downloads</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-num" data-count="52">0</span>
-                    <span class="stat-label"><i class="fas fa-code-branch"></i> Forks</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-num" data-count="7">0</span>
-                    <span class="stat-label"><i class="fas fa-globe"></i> Countries</span>
-                </div>
+              <div class="stat">
+                <span class="stat-num" id="statStars" data-count="644">0</span>
+                <span class="stat-label"><i class="fas fa-star"></i> Stars</span>
+              </div>
+              <div class="stat">
+                <span class="stat-num" id="statDownloads" data-count="300000">0</span>
+                <span class="stat-label"><i class="fas fa-download"></i> Downloads</span>
+              </div>
+              <div class="stat">
+                <span class="stat-num" id="statForks" data-count="52">0</span>
+                <span class="stat-label"><i class="fas fa-code-branch"></i> Forks</span>
+              </div>
+              <div class="stat">
+                <span class="stat-num" id="statCountries" data-count="7">0</span>
+                <span class="stat-label"><i class="fas fa-globe"></i> Countries</span>
+              </div>
             </div>
             <div class="hero-buttons">
                 <a href="https://github.com/xodiosx/XoDos/releases" class="btn btn-primary" target="_blank">
@@ -268,49 +268,8 @@
                 <span class="section-tag">🎮 PATCH NOTES</span>
                 <h2 class="section-title">Release <span class="highlight">Log</span></h2>
             </div>
-            <div class="releases-list">
-                <div class="release-card glass-card">
-                    <div class="release-header">
-                        <span class="release-badge latest">LATEST</span>
-                        <h3>XoDos — Rebirth Edition</h3>
-                        <span class="release-version">v1.0.3-link</span>
-                        <span class="release-date">Dec 8, 2025</span>
-                    </div>
-                    <p>Happy Holidays & Happy Birthday XoDos! 🎂 The rebirth of XoDos with a completely new architecture.</p>
-                    <a href="https://github.com/xodiosx/XoDos/releases/tag/1.0.3-link" target="_blank" class="btn btn-sm btn-primary">Download →</a>
-                </div>
-                <div class="release-card glass-card">
-                    <div class="release-header">
-                        <span class="release-badge major">MAJOR</span>
-                        <h3>XoDos v6.0.0 Final</h3>
-                        <span class="release-version">v6.0.0</span>
-                        <span class="release-date">Nov 9, 2025</span>
-                        <span class="release-downloads">📥 13,823</span>
-                    </div>
-                    <p>Last update before development pause. Complete stable release with all features working.</p>
-                    <a href="https://github.com/xodiosx/XoDos/releases/tag/v6.0.0%2Bc050ebd" target="_blank" class="btn btn-sm btn-primary">Download →</a>
-                </div>
-                <div class="release-card glass-card">
-                    <div class="release-header">
-                        <span class="release-badge major">MAJOR</span>
-                        <h3>XoDos v6.0.0 — "The All-in-One Powerhouse"</h3>
-                        <span class="release-version">v6.0.0</span>
-                        <span class="release-date">Oct 28, 2025</span>
-                        <span class="release-downloads">📥 150,207</span>
-                    </div>
-                    <p>Massive update packed with fixes, optimizations, and incredible new features. The definitive XoDos experience.</p>
-                    <a href="https://github.com/xodiosx/XoDos/releases/tag/v6.0.0" target="_blank" class="btn btn-sm btn-primary">Download →</a>
-                </div>
-                <div class="release-card glass-card">
-                    <div class="release-header">
-                        <h3>XoDos v5.9.0</h3>
-                        <span class="release-version">v5.9.0</span>
-                        <span class="release-date">Sep 7, 2025</span>
-                        <span class="release-downloads">📥 96,631</span>
-                    </div>
-                    <p>Polished UI, powerful new under-the-hood improvements. Major update for the emulator core.</p>
-                    <a href="https://github.com/xodiosx/XoDos/releases/tag/5.9.0" target="_blank" class="btn btn-sm btn-secondary">Download →</a>
-                </div>
+            <div class="releases-list" id="releasesList">
+            <!-- Se llena dinámicamente desde GitHub API — fallback en js/github-api.js -->
             </div>
             <div class="releases-more">
                 <a href="https://github.com/xodiosx/XoDos/releases" target="_blank" class="btn btn-secondary">
@@ -329,91 +288,12 @@
                 <span class="section-tag">🗡️ GUILD MEMBERS</span>
                 <h2 class="section-title">The <span class="highlight">Team</span></h2>
             </div>
-            <div class="contributors-grid">
-                <div class="contributor-card glass-card lead">
-                    <div class="contributor-avatar">
-                        <img src="https://avatars.githubusercontent.com/u/59384112?v=4" alt="xodiosx" loading="lazy">
-                        <span class="contributor-role">👑 Lead</span>
-                    </div>
-                    <h4>xodiosx</h4>
-                    <span class="contributor-flag">🇾🇪 Yemen</span>
-                    <div class="contributor-links">
-                        <a href="https://github.com/xodiosx" target="_blank"><i class="fab fa-github"></i></a>
-                        <a href="https://x.com/XAleiwi" target="_blank"><i class="fab fa-x-twitter"></i></a>
-                        <a href="https://youtube.com/@xodmods5082" target="_blank"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
-                <div class="contributor-card glass-card">
-                    <div class="contributor-avatar">
-                        <img src="https://avatars.githubusercontent.com/DesarrolladorPrimary" alt="DesarrolladorPrimary" loading="lazy">
-                        <span class="contributor-role">⚔️ Dev</span>
-                    </div>
-                    <h4>DesarrolladorPrimary</h4>
-                    <span class="contributor-flag">🇨🇴 Colombia</span>
-                    <div class="contributor-links">
-                        <a href="https://github.com/DesarrolladorPrimary" target="_blank"><i class="fab fa-github"></i></a>
-                    </div>
-                </div>
-                <div class="contributor-card glass-card">
-                    <div class="contributor-avatar">
-                        <img src="https://avatars.githubusercontent.com/Mondo67244" alt="Mondo67244" loading="lazy">
-                        <span class="contributor-role">⚔️ Dev</span>
-                    </div>
-                    <h4>Mondo67244</h4>
-                    <span class="contributor-flag">🇲🇫 France</span>
-                    <div class="contributor-links">
-                        <a href="https://github.com/Mondo67244" target="_blank"><i class="fab fa-github"></i></a>
-                    </div>
-                </div>
-                <div class="contributor-card glass-card">
-                    <div class="contributor-avatar">
-                        <div class="contributor-placeholder">A</div>
-                        <span class="contributor-role">⚔️ Dev</span>
-                    </div>
-                    <h4>Aurora0y</h4>
-                    <span class="contributor-flag">🇧🇷 Brazil</span>
-                    <span class="contributor-telegram">Telegram</span>
-                </div>
-                <div class="contributor-card glass-card">
-                    <div class="contributor-avatar">
-                        <div class="contributor-placeholder">C</div>
-                        <span class="contributor-role">⚔️ Dev</span>
-                    </div>
-                    <h4>Chest1902</h4>
-                    <span class="contributor-flag">🇧🇩 Bangladesh</span>
-                    <span class="contributor-telegram">Telegram</span>
-                </div>
-                <div class="contributor-card glass-card">
-                    <div class="contributor-avatar">
-                        <img src="https://avatars.githubusercontent.com/jiaxinchen-max" alt="jiaxinchen-max" loading="lazy">
-                        <span class="contributor-role">⚔️ Dev</span>
-                    </div>
-                    <h4>jiaxinchen-max</h4>
-                    <span class="contributor-flag">🇨🇳 China</span>
-                    <div class="contributor-links">
-                        <a href="https://github.com/jiaxinchen-max" target="_blank"><i class="fab fa-github"></i></a>
-                    </div>
-                </div>
-                <div class="contributor-card glass-card">
-                    <div class="contributor-avatar">
-                        <img src="https://avatars.githubusercontent.com/Snap888" alt="Snap888" loading="lazy">
-                        <span class="contributor-role">⚔️ Dev</span>
-                    </div>
-                    <h4>Snap888</h4>
-                    <span class="contributor-flag">🇷🇺 Russia</span>
-                    <div class="contributor-links">
-                        <a href="https://github.com/Snap888" target="_blank"><i class="fab fa-github"></i></a>
-                    </div>
-                </div>
-                <div class="contributor-card glass-card">
-                    <div class="contributor-avatar">
-                        <div class="contributor-placeholder">✦</div>
-                        <span class="contributor-role">🎨 Art</span>
-                    </div>
-                    <h4>xl_v6 / ashen</h4>
-                    <span class="contributor-flag">🇮🇶 Iraq</span>
-                    <span class="contributor-telegram">Logo Designer</span>
-                </div>
+            <div class="contributors-grid" id="contributorsGrid">
+            <!-- Contributors dinámicos desde GitHub API — fallback en js/github-api.js -->
+            </div>
+            <!-- Contributors sin cuenta de GitHub verificable en el repo -->
+            <div class="contributors-extras" id="contributorsExtras">
+            <!-- Se llena dinámicamente con Aurora0y, Chest1902, xl_v6/ashen -->
             </div>
         </div>
     </section>
@@ -533,6 +413,7 @@
         </div>
     </footer>
 
+    <script src="js/github-api.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>

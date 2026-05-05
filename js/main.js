@@ -1,312 +1,477 @@
 /* ═══════════════════════════════════════════════════════════════
-   XoDos Landing Page — JS
-   Karys Developer (KD) — Pixel Fantasy Vibes
-   ═══════════════════════════════════════════════════════════════ */
+XoDos Landing Page — JS
+Karys Developer (KD) — Pixel Fantasy Vibes
+═══════════════════════════════════════════════════════════════ */
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    // ── NAV SCROLL ──
-    const nav = document.getElementById('nav');
-    const navToggle = document.getElementById('navToggle');
-    const navLinks = document.getElementById('navLinks');
+  // ── NAV SCROLL ──
+  const nav = document.getElementById('nav');
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
 
-    window.addEventListener('scroll', () => {
-        nav.classList.toggle('scrolled', window.scrollY > 50);
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  navToggle.addEventListener('click', () => {
+    navToggle.classList.toggle('active');
+    navLinks.classList.toggle('open');
+  });
+
+  // Close nav on link click (mobile)
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navToggle.classList.remove('active');
+      navLinks.classList.remove('open');
     });
+  });
 
-    navToggle.addEventListener('click', () => {
-        navToggle.classList.toggle('active');
-        navLinks.classList.toggle('open');
-    });
+  // ── HERO PARTICLES ──
+  const particlesContainer = document.getElementById('heroParticles');
+  const particleCount = 40;
 
-    // Close nav on link click (mobile)
-    navLinks.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-            navToggle.classList.remove('active');
-            navLinks.classList.remove('open');
-        });
-    });
+  for (let i = 0; i < particleCount; i++) {
+    const p = document.createElement('div');
+    p.className = 'hero-particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.top = (60 + Math.random() * 40) + '%';
+    p.style.animationDuration = (6 + Math.random() * 10) + 's';
+    p.style.animationDelay = Math.random() * 8 + 's';
+    p.style.width = (1 + Math.random() * 2) + 'px';
+    p.style.height = p.style.width;
 
-    // ── HERO PARTICLES ──
-    const particlesContainer = document.getElementById('heroParticles');
-    const particleCount = 40;
+    // Some particles are green (termux style)
+    if (Math.random() > 0.7) {
+      p.style.background = 'var(--termux-green)';
+      p.style.boxShadow = '0 0 4px var(--termux-green-glow)';
+    }
+    particlesContainer.appendChild(p);
+  }
 
-    for (let i = 0; i < particleCount; i++) {
-        const p = document.createElement('div');
-        p.className = 'hero-particle';
-        p.style.left = Math.random() * 100 + '%';
-        p.style.top = (60 + Math.random() * 40) + '%';
-        p.style.animationDuration = (6 + Math.random() * 10) + 's';
-        p.style.animationDelay = Math.random() * 8 + 's';
-        p.style.width = (1 + Math.random() * 2) + 'px';
-        p.style.height = p.style.width;
+  // ── TYPEWRITER ──
+  const typewriterEl = document.getElementById('termuxType');
+  const commands = [
+    'xodos --install-system',
+    'startx --wayland',
+    'wine game.exe',
+    'proot-distro login debian',
+    'box64 winecfg',
+    'turnip & dxvk enabled ✓',
+    'echo "Gaming on Android 🎮"',
+  ];
+  let cmdIndex = 0;
+  let charIndex = 0;
+  let isDeleting = false;
+  let typeSpeed = 60;
 
-        // Some particles are green (termux style)
-        if (Math.random() > 0.7) {
-            p.style.background = 'var(--termux-green)';
-            p.style.boxShadow = '0 0 4px var(--termux-green-glow)';
-        }
-        particlesContainer.appendChild(p);
+  function typewrite() {
+    const currentCmd = commands[cmdIndex];
+
+    if (!isDeleting) {
+      typewriterEl.textContent = currentCmd.substring(0, charIndex + 1);
+      charIndex++;
+      if (charIndex === currentCmd.length) {
+        isDeleting = true;
+        typeSpeed = 2000; // Pause before deleting
+      } else {
+        typeSpeed = 40 + Math.random() * 60;
+      }
+    } else {
+      typewriterEl.textContent = currentCmd.substring(0, charIndex - 1);
+      charIndex--;
+      if (charIndex === 0) {
+        isDeleting = false;
+        cmdIndex = (cmdIndex + 1) % commands.length;
+        typeSpeed = 400;
+      } else {
+        typeSpeed = 25;
+      }
     }
 
-    // ── TYPEWRITER ──
-    const typewriterEl = document.getElementById('termuxType');
-    const commands = [
-        'xodos --install-system',
-        'startx --wayland',
-        'wine game.exe',
-        'proot-distro login debian',
-        'box64 winecfg',
-        'turnip & dxvk enabled ✓',
-        'echo "Gaming on Android 🎮"',
-    ];
-    let cmdIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
-    let typeSpeed = 60;
+    setTimeout(typewrite, typeSpeed);
+  }
+  typewrite();
 
-    function typewrite() {
-        const currentCmd = commands[cmdIndex];
+  // ══════════════════════════════════════════════════════════
+  // GITHUB API — DYNAMIC DATA
+  // ══════════════════════════════════════════════════════════
 
-        if (!isDeleting) {
-            typewriterEl.textContent = currentCmd.substring(0, charIndex + 1);
-            charIndex++;
-            if (charIndex === currentCmd.length) {
-                isDeleting = true;
-                typeSpeed = 2000; // Pause before deleting
-            } else {
-                typeSpeed = 40 + Math.random() * 60;
-            }
+  // ── FORMAT HELPERS ──
+  function formatNumber(num) {
+    if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M+';
+    if (num >= 1000) return Math.floor(num / 1000) + 'K+';
+    return num.toString();
+  }
+
+  function formatDate(dateStr) {
+    if (!dateStr) return '';
+    try {
+      const d = new Date(dateStr);
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    } catch (e) {
+      return dateStr;
+    }
+  }
+
+  function formatDownloads(num) {
+    if (num >= 1000000) return '📥 ' + (num / 1000000).toFixed(1) + 'M';
+    if (num >= 1000) return '📥 ' + num.toLocaleString();
+    if (num > 0) return '📥 ' + num;
+    return '';
+  }
+
+  // ── UPDATE HERO STATS ──
+  function updateHeroStats(data) {
+    const statStars = document.getElementById('statStars');
+    const statDownloads = document.getElementById('statDownloads');
+    const statForks = document.getElementById('statForks');
+
+    if (statStars) statStars.dataset.count = data.stars;
+    if (statDownloads) statDownloads.dataset.count = data.downloads;
+    if (statForks) statForks.dataset.count = data.forks;
+  }
+
+  // ── RENDER RELEASES ──
+  function renderReleases(releases) {
+    const container = document.getElementById('releasesList');
+    if (!container || !releases || !releases.length) return;
+
+    container.innerHTML = releases.map((release, index) => {
+      // Badge logic
+      let badge = '';
+      if (release.isLatest) {
+        badge = '<span class="release-badge latest">LATEST</span>';
+      } else if (release.isPrerelease) {
+        badge = '<span class="release-badge prerelease">PRE-RELEASE</span>';
+      } else {
+        // Check if major version (X.0.0)
+        const versionMatch = (release.tagName || '').match(/v?(\d+)\.0\.0/);
+        if (versionMatch) {
+          badge = '<span class="release-badge major">MAJOR</span>';
+        }
+      }
+
+      // Downloads count
+      const downloadsHtml = release.downloads > 0
+        ? `<span class="release-downloads">${formatDownloads(release.downloads)}</span>`
+        : '';
+
+      // Button style: latest uses primary, others secondary
+      const btnClass = release.isLatest ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-secondary';
+
+      return `
+        <div class="release-card glass-card reveal">
+          <div class="release-header">
+            ${badge}
+            <h3>${escapeHtml(release.name)}</h3>
+            <span class="release-version">${escapeHtml(release.tagName)}</span>
+            <span class="release-date">${formatDate(release.date)}</span>
+            ${downloadsHtml}
+          </div>
+          <p>${escapeHtml(release.body)}</p>
+          <a href="${release.htmlUrl}" target="_blank" class="${btnClass}">Download →</a>
+        </div>
+      `;
+    }).join('');
+
+    // Re-observe new elements for scroll reveal
+    container.querySelectorAll('.reveal').forEach(el => {
+      revealObserver.observe(el);
+    });
+  }
+
+  // ── RENDER CONTRIBUTORS ──
+  function renderContributors(contributors) {
+    const grid = document.getElementById('contributorsGrid');
+    const extras = document.getElementById('contributorsExtras');
+    if (!grid) return;
+
+    // Render dynamic contributors from GitHub API
+    if (contributors && contributors.length) {
+      grid.innerHTML = contributors.map(c => {
+        const role = XoDosAPI.getRole(c.login, c.contributions);
+        const country = XoDosAPI.getCountry(c.login);
+        const socialLinks = XoDosAPI.getSocialLinks(c.login);
+        const isLead = c.login === 'xodiosx';
+        const leadClass = isLead ? ' lead' : '';
+
+        const linksHtml = socialLinks.map(link =>
+          `<a href="${link.url}" target="_blank"><i class="${link.icon}"></i></a>`
+        ).join('');
+
+        return `
+          <div class="contributor-card glass-card${leadClass} reveal">
+            <div class="contributor-avatar">
+              <img src="${c.avatarUrl}" alt="${escapeHtml(c.login)}" loading="lazy">
+              <span class="contributor-role">${role}</span>
+            </div>
+            <h4>${escapeHtml(c.login)}</h4>
+            <span class="contributor-flag">${country}</span>
+            <div class="contributor-links">${linksHtml}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Render static contributors (no GitHub account in repo)
+    if (extras && XoDosAPI.STATIC_CONTRIBUTORS.length) {
+      extras.innerHTML = XoDosAPI.STATIC_CONTRIBUTORS.map(c => {
+        return `
+          <div class="contributor-card glass-card reveal">
+            <div class="contributor-avatar">
+              <div class="contributor-placeholder">${c.initial}</div>
+              <span class="contributor-role">${c.role}</span>
+            </div>
+            <h4>${escapeHtml(c.name)}</h4>
+            <span class="contributor-flag">${c.flag}</span>
+            <span class="contributor-telegram">${c.note}</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Re-observe new elements for scroll reveal
+    document.querySelectorAll('#contributorsGrid .reveal, #contributorsExtras .reveal').forEach(el => {
+      revealObserver.observe(el);
+    });
+  }
+
+  // ── ESCAPE HTML (XSS prevention) ──
+  function escapeHtml(str) {
+    if (!str) return '';
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  // ── STAT COUNTER (animado) ──
+  function animateCounters() {
+    document.querySelectorAll('.stat-num').forEach(el => {
+      const target = parseInt(el.dataset.count) || 0;
+      const duration = 2000;
+      const startTime = performance.now();
+
+      function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+
+        // Easing: ease out cubic
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = Math.floor(eased * target);
+
+        // Format number
+        if (target >= 1000000) {
+          el.textContent = (current / 1000000).toFixed(1) + 'M+';
+        } else if (target >= 1000) {
+          el.textContent = Math.floor(current / 1000) + 'K+';
         } else {
-            typewriterEl.textContent = currentCmd.substring(0, charIndex - 1);
-            charIndex--;
-            if (charIndex === 0) {
-                isDeleting = false;
-                cmdIndex = (cmdIndex + 1) % commands.length;
-                typeSpeed = 400;
-            } else {
-                typeSpeed = 25;
-            }
+          el.textContent = current;
         }
 
-        setTimeout(typewrite, typeSpeed);
-    }
-    typewrite();
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        } else {
+          // Final value
+          if (target >= 1000000) {
+            el.textContent = (target / 1000000).toFixed(1) + 'M+';
+          } else if (target >= 1000) {
+            el.textContent = Math.floor(target / 1000) + 'K+';
+          } else {
+            el.textContent = target;
+          }
+        }
+      }
 
-    // ── STAT COUNTER ──
-    function animateCounters() {
-        document.querySelectorAll('.stat-num').forEach(el => {
-            const target = parseInt(el.dataset.count);
-            const duration = 2000;
-            const startTime = performance.now();
+      requestAnimationFrame(update);
+    });
+  }
 
-            function update(currentTime) {
-                const elapsed = currentTime - startTime;
-                const progress = Math.min(elapsed / duration, 1);
+  // ── SCROLL REVEAL ──
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
-                // Easing: ease out cubic
-                const eased = 1 - Math.pow(1 - progress, 3);
-                const current = Math.floor(eased * target);
+  document.querySelectorAll('.about-card, .feature-item, .how-step, .credit-card, .community-card').forEach(el => {
+    el.classList.add('reveal');
+    revealObserver.observe(el);
+  });
 
-                // Format number
-                if (target >= 1000) {
-                    el.textContent = (current / 1000).toFixed(current >= 100000 ? 0 : 0) + 'K+';
-                    if (current >= 1000 && current < 100000) {
-                        el.textContent = Math.floor(current / 1000) + 'K+';
-                    } else if (current >= 100000) {
-                        el.textContent = Math.floor(current / 1000) + 'K+';
-                    }
-                } else {
-                    el.textContent = current;
-                }
+  // ══════════════════════════════════════════════════════════
+  // INIT — Fetch GitHub data, then render everything
+  // ══════════════════════════════════════════════════════════
+  XoDosAPI.init().then(data => {
+    window.xodosData = data;
 
-                if (progress < 1) {
-                    requestAnimationFrame(update);
-                } else {
-                    // Final value
-                    if (target >= 100000) {
-                        el.textContent = '300K+';
-                    } else if (target >= 1000) {
-                        el.textContent = Math.floor(target / 1000) + 'K+';
-                    } else {
-                        el.textContent = target;
-                    }
-                }
-            }
+    // Update hero stats with real data
+    updateHeroStats(data);
 
-            requestAnimationFrame(update);
-        });
-    }
+    // Render releases dynamically
+    renderReleases(data.releases);
 
-    // Start counters when hero is visible
+    // Render contributors dynamically + static extras
+    renderContributors(data.contributors);
+
+    // Start counters when hero is visible (with real data now)
     const heroObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                animateCounters();
-                heroObserver.disconnect();
-            }
-        });
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateCounters();
+          heroObserver.disconnect();
+        }
+      });
     }, { threshold: 0.3 });
     heroObserver.observe(document.getElementById('hero'));
+  });
 
-    // ── SCROLL REVEAL ──
-    const revealObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
-        });
-    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  // ── KD PIXEL AVATAR (watermark) ──
+  // 16x20 shield sprite with KD + crossed swords
+  // Palette: 1=purple, 2=green(termux), 3=gold, 4=dark purple, 5=white
+  const KD_SHIELD = [
+    //0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
+    [0,0,0,3,3,3,3,3,3,3,3,3,3,3,0,0], // 0 top border
+    [0,0,3,5,5,5,5,5,5,5,5,5,5,5,3,0], // 1
+    [0,3,5,4,4,4,4,4,4,4,4,4,4,5,5,3], // 2 shield fill
+    [0,3,5,4,1,4,4,4,4,4,4,4,2,4,5,3], // 3 K D
+    [0,3,5,4,1,4,4,4,4,4,4,2,4,4,5,3], // 4 K D
+    [0,3,5,4,1,4,4,4,4,4,2,4,4,4,5,3], // 5 K D
+    [0,3,5,4,1,1,4,4,4,2,4,4,4,4,5,3], // 6 KK D
+    [0,3,5,4,1,4,1,4,2,2,2,2,4,4,5,3], // 7 K K DDDD
+    [0,3,5,4,1,4,1,4,2,4,4,4,4,4,5,3], // 8 K K D
+    [0,3,5,4,1,4,4,1,2,4,4,4,4,4,5,3], // 9 K KD
+    [0,3,5,4,1,4,4,1,2,4,4,4,4,4,5,3], // 10 K KD
+    [0,3,5,4,4,4,4,4,4,4,4,4,4,4,5,3], // 11
+    [0,3,5,5,5,5,5,5,5,5,5,5,5,5,5,3], // 12
+    [0,0,3,5,5,3,5,5,5,5,3,5,5,3,0,0], // 13 sword guards
+    [0,0,0,3,0,0,3,5,5,3,0,0,3,0,0,0], // 14
+    [0,0,3,0,0,0,0,3,3,0,0,0,0,3,0,0], // 15 crossguards
+    [0,0,0,3,0,0,0,0,0,0,0,0,3,0,0,0], // 16
+    [0,0,0,0,3,0,0,0,0,0,0,3,0,0,0,0], // 17 blades
+    [0,0,0,0,0,3,3,3,3,3,3,0,0,0,0,0], // 18 pommel
+    [0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0], // 19 tip
+  ];
 
-    document.querySelectorAll('.about-card, .feature-item, .how-step, .release-card, .contributor-card, .credit-card, .community-card').forEach(el => {
-        el.classList.add('reveal');
-        revealObserver.observe(el);
-    });
+  const palette = {
+    1: '#bb80d3', // K - light purple
+    2: '#18dc6e', // D - termux green
+    3: '#f5c518', // gold border/swords
+    4: '#2d1b69', // dark purple fill
+    5: '#4a2d8a', // mid purple
+  };
 
-    // ── KD PIXEL AVATAR (watermark) ──
-    // 16x20 shield sprite with KD + crossed swords
-    // Palette: 1=purple, 2=green(termux), 3=gold, 4=dark purple, 5=white
-    const KD_SHIELD = [
-        //0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
-        [0,0,0,3,3,3,3,3,3,3,3,3,3,3,0,0], // 0  top border
-        [0,0,3,5,5,5,5,5,5,5,5,5,5,5,3,0], // 1
-        [0,3,5,4,4,4,4,4,4,4,4,4,4,5,5,3], // 2  shield fill
-        [0,3,5,4,1,4,4,4,4,4,4,4,2,4,5,3], // 3  K    D
-        [0,3,5,4,1,4,4,4,4,4,4,2,4,4,5,3], // 4  K   D
-        [0,3,5,4,1,4,4,4,4,4,2,4,4,4,5,3], // 5  K  D
-        [0,3,5,4,1,1,4,4,4,2,4,4,4,4,5,3], // 6  KK D
-        [0,3,5,4,1,4,1,4,2,2,2,2,4,4,5,3], // 7  K K DDDD
-        [0,3,5,4,1,4,1,4,2,4,4,4,4,4,5,3], // 8  K K D
-        [0,3,5,4,1,4,4,1,2,4,4,4,4,4,5,3], // 9  K  KD
-        [0,3,5,4,1,4,4,1,2,4,4,4,4,4,5,3], // 10 K  KD
-        [0,3,5,4,4,4,4,4,4,4,4,4,4,4,5,3], // 11
-        [0,3,5,5,5,5,5,5,5,5,5,5,5,5,5,3], // 12
-        [0,0,3,5,5,3,5,5,5,5,3,5,5,3,0,0], // 13 sword guards
-        [0,0,0,3,0,0,3,5,5,3,0,0,3,0,0,0], // 14
-        [0,0,3,0,0,0,0,3,3,0,0,0,0,3,0,0], // 15 crossguards
-        [0,0,0,3,0,0,0,0,0,0,0,0,3,0,0,0], // 16
-        [0,0,0,0,3,0,0,0,0,0,0,3,0,0,0,0], // 17 blades
-        [0,0,0,0,0,3,3,3,3,3,3,0,0,0,0,0], // 18 pommel
-        [0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0], // 19 tip
-    ];
+  const pixelCanvas = document.getElementById('pixelCanvas');
+  const pCtx = pixelCanvas.getContext('2d');
 
-    const palette = {
-        1: '#bb80d3', // K - light purple
-        2: '#18dc6e', // D - termux green
-        3: '#f5c518', // gold border/swords
-        4: '#2d1b69', // dark purple fill
-        5: '#4a2d8a', // mid purple
-    };
-
-    const pixelCanvas = document.getElementById('pixelCanvas');
-    const pCtx = pixelCanvas.getContext('2d');
-
-    function drawShield(ctx, data, size) {
-        ctx.clearRect(0, 0, size[0], size[1]);
-        const w = data[0].length;
-        const h = data.length;
-        for (let y = 0; y < h; y++) {
-            for (let x = 0; x < w; x++) {
-                const val = data[y][x];
-                if (val > 0) {
-                    ctx.fillStyle = palette[val] || '#9b59b6';
-                    ctx.fillRect(x, y, 1, 1);
-                }
-            }
+  function drawShield(ctx, data, size) {
+    ctx.clearRect(0, 0, size[0], size[1]);
+    const w = data[0].length;
+    const h = data.length;
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        const val = data[y][x];
+        if (val > 0) {
+          ctx.fillStyle = palette[val] || '#9b59b6';
+          ctx.fillRect(x, y, 1, 1);
         }
+      }
+    }
+  }
+
+  drawShield(pCtx, KD_SHIELD, [16, 20]);
+
+  // Animate: subtle magical shimmer on the shield
+  let shimmerFrame = 0;
+  function shimmerShield() {
+    shimmerFrame++;
+    pCtx.clearRect(0, 0, 16, 20);
+    const w = KD_SHIELD[0].length;
+    const h = KD_SHIELD.length;
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        const val = KD_SHIELD[y][x];
+        if (val > 0) {
+          const wave = Math.sin((shimmerFrame * 0.03) + (x * 0.5) + (y * 0.3)) * 0.12 + 0.88;
+          pCtx.globalAlpha = wave;
+          pCtx.fillStyle = palette[val] || '#9b59b6';
+          pCtx.fillRect(x, y, 1, 1);
+        }
+      }
+    }
+    pCtx.globalAlpha = 1;
+    requestAnimationFrame(shimmerShield);
+  }
+  shimmerShield();
+
+  // ── FOOTER PIXEL ART ──
+  const footerCanvas = document.getElementById('footerPixelCanvas');
+  const fCtx = footerCanvas.getContext('2d');
+  drawShield(fCtx, KD_SHIELD, [16, 20]);
+
+  // ── FOOTER YEAR ──
+  document.querySelector('.year').textContent = new Date().getFullYear();
+
+  // ── SMOOTH SCROLL for anchor links ──
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // ── EASTER EGG: Konami Code ──
+  const konamiCode = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+  let konamiIndex = 0;
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === konamiCode[konamiIndex]) {
+      konamiIndex++;
+      if (konamiIndex === konamiCode.length) {
+        activateEasterEgg();
+        konamiIndex = 0;
+      }
+    } else {
+      konamiIndex = 0;
+    }
+  });
+
+  function activateEasterEgg() {
+    // Rain of pixel swords
+    const emojis = ['⚔', '🗡', '💎', '✨', '🛡'];
+    for (let i = 0; i < 30; i++) {
+      const el = document.createElement('div');
+      el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      el.style.cssText = `
+        position: fixed;
+        top: -50px;
+        left: ${Math.random() * 100}vw;
+        font-size: ${16 + Math.random() * 24}px;
+        z-index: 9999;
+        pointer-events: none;
+        animation: easterRain ${2 + Math.random() * 3}s linear forwards;
+      `;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 5000);
     }
 
-    drawShield(pCtx, KD_SHIELD, [16, 20]);
-
-    // Animate: subtle magical shimmer on the shield
-    let shimmerFrame = 0;
-    function shimmerShield() {
-        shimmerFrame++;
-        pCtx.clearRect(0, 0, 16, 20);
-        const w = KD_SHIELD[0].length;
-        const h = KD_SHIELD.length;
-        for (let y = 0; y < h; y++) {
-            for (let x = 0; x < w; x++) {
-                const val = KD_SHIELD[y][x];
-                if (val > 0) {
-                    const wave = Math.sin((shimmerFrame * 0.03) + (x * 0.5) + (y * 0.3)) * 0.12 + 0.88;
-                    pCtx.globalAlpha = wave;
-                    pCtx.fillStyle = palette[val] || '#9b59b6';
-                    pCtx.fillRect(x, y, 1, 1);
-                }
-            }
+    // Add the rain animation if not present
+    if (!document.getElementById('easterStyle')) {
+      const style = document.createElement('style');
+      style.id = 'easterStyle';
+      style.textContent = `
+        @keyframes easterRain {
+          0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+          100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
         }
-        pCtx.globalAlpha = 1;
-        requestAnimationFrame(shimmerShield);
+      `;
+      document.head.appendChild(style);
     }
-    shimmerShield();
-
-    // ── FOOTER PIXEL ART ──
-    const footerCanvas = document.getElementById('footerPixelCanvas');
-    const fCtx = footerCanvas.getContext('2d');
-    drawShield(fCtx, KD_SHIELD, [16, 20]);
-
-    // ── FOOTER YEAR ──
-    document.querySelector('.year').textContent = new Date().getFullYear();
-
-    // ── SMOOTH SCROLL for anchor links ──
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        });
-    });
-
-    // ── EASTER EGG: Konami Code ──
-    const konamiCode = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
-    let konamiIndex = 0;
-
-    document.addEventListener('keydown', (e) => {
-        if (e.key === konamiCode[konamiIndex]) {
-            konamiIndex++;
-            if (konamiIndex === konamiCode.length) {
-                activateEasterEgg();
-                konamiIndex = 0;
-            }
-        } else {
-            konamiIndex = 0;
-        }
-    });
-
-    function activateEasterEgg() {
-        // Rain of pixel swords
-        const emojis = ['⚔', '🗡', '💎', '✨', '🛡'];
-        for (let i = 0; i < 30; i++) {
-            const el = document.createElement('div');
-            el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-            el.style.cssText = `
-                position: fixed;
-                top: -50px;
-                left: ${Math.random() * 100}vw;
-                font-size: ${16 + Math.random() * 24}px;
-                z-index: 9999;
-                pointer-events: none;
-                animation: easterRain ${2 + Math.random() * 3}s linear forwards;
-            `;
-            document.body.appendChild(el);
-            setTimeout(() => el.remove(), 5000);
-        }
-
-        // Add the rain animation if not present
-        if (!document.getElementById('easterStyle')) {
-            const style = document.createElement('style');
-            style.id = 'easterStyle';
-            style.textContent = `
-                @keyframes easterRain {
-                    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-                    100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
-                }
-            `;
-            document.head.appendChild(style);
-        }
-    }
+  }
 
 });
